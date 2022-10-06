@@ -23,6 +23,9 @@ string mathExpression = "x^  2 + y ^ 2 + 100 + sin(pi)";
 Console.WriteLine(MathParser.calculate(0.5, 0.5, mathExpression).ToString());
 ```
 
+Вывод: 100,5
+
+
 ## Справка
 
 Поддерживаются следующие токены в выражении:
