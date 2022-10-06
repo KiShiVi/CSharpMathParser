@@ -27,3 +27,5 @@ Console.WriteLine(MathParser.calculate(0.5, 0.5, mathExpression).ToString());
 
 Поддерживаются следующие токены в выражении:
 ***( ) + - * / ^ sin cos tg ctg ln pi e x y***
+
+ВНИМАНИЕ! На данный момент нет проверок на корректность заданного математического выражения
