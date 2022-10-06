@@ -67,7 +67,6 @@ namespace MathParserSpace
                              new Token("cos", 0, OperatorType.PREFIX),
                              new Token("tg", 0, OperatorType.PREFIX),
                              new Token("ctg", 0, OperatorType.PREFIX),
-                             //new Token("lg", 0, OperatorType.PREFIX),
                              new Token("ln", 0, OperatorType.PREFIX),
                              new Token("pi", -1, OperatorType.CONST),
                              new Token("x", -1, OperatorType.PARAM),
@@ -107,7 +106,6 @@ namespace MathParserSpace
                                     case "cos": localStack.Push(Math.Cos(localStack.Pop()));         break;
                                     case "tg" : localStack.Push(Math.Tan(localStack.Pop()));         break;
                                     case "ctg": localStack.Push(ctg(localStack.Pop()));              break;
-                                    //case "lg" : localStack.Push(Math.Log2(localStack.Pop()));        break;
                                     case "ln" : localStack.Push(Math.Log(localStack.Pop()));         break;
                                 }
                             break;
@@ -131,8 +129,6 @@ namespace MathParserSpace
                         default: throw new Exception("Something gone wrong");
                         }
                     }
-
-            //print(polishList.joinToString(" "))
             return localStack.Pop();
         }
 
@@ -218,11 +214,6 @@ namespace MathParserSpace
 
             if (Char.IsDigit(infixPhrase[0]))
             {
-                //if(prevToken.type == OperatorType.PREFIX
-                //   || prevToken.type == OperatorType.CONST
-                //   || prevToken.type == OperatorType.PARAM)
-                //    throw new Exception("Incorrect phrase");
-
                 while (iCounter < infixPhrase.Length && Char.IsDigit(infixPhrase[iCounter]))
                 {
                     outToken += infixPhrase[iCounter];
@@ -233,35 +224,12 @@ namespace MathParserSpace
 
             foreach (Token token in tokens)
             {
-                //Сразу отсеиваем токены, которые длинне мат. выражения
+                //Сразу отсеиваем токены, которые длиннее мат. выражения
                 if (infixPhrase.Length < token.singleToken.Length)
                     continue;
 
                 if (infixPhrase.Substring(0, token.singleToken.Length) == token.singleToken)
                 {
-                    // Блок проверок
-                    //if (token.priority >= 2 && token.priority <= 3 &&
-                    //    (prevToken.type == OperatorType.NULL ||
-                    //            prevToken.type == OperatorType.OPEN_BRACKET ||
-                    //            prevToken.type == OperatorType.BINARY))
-                    //    throw new Exception("Incorrect phrase");
-
-                    //if ((token.singleToken == "x" || token.singleToken == "y")
-                    //            && (prevToken.type == OperatorType.XPARAM
-                    //            || prevToken.type == OperatorType.YPARAM
-                    //            || prevToken.type == OperatorType.DIGIT
-                    //            || prevToken.type == OperatorType.CONST
-                    //            || prevToken.type == OperatorType.CLOSE_BRACKET))
-                    //    throw new Exception("Incorrect phrase");
-                    //if (token.singleToken == "x")
-                    //{
-                    //    return new Token(token.singleToken, -1, OperatorType.XPARAM);
-                    //}
-                    //if (token.singleToken == "y")
-                    //{
-                    //    return new Token(token.singleToken.ToString(), -1, OperatorType.YPARAM);
-                    //}
-
                     //  check for unary + and -
                     if (((token.singleToken == "+") || (token.singleToken == "-")) &&
                         ((prevToken.type == OperatorType.NULL) ||
@@ -279,14 +247,6 @@ namespace MathParserSpace
 
                         while (iCounter < infixPhrase.Length && (Char.IsDigit(infixPhrase[iCounter])))
                         {
-                            //if ((infixPhrase[iCounter] == 'x' || infixPhrase[iCounter] == 'y') 
-                            //    && (prevToken.type == OperatorType.XPARAM 
-                            //    || prevToken.type == OperatorType.YPARAM
-                            //    || prevToken.type == OperatorType.DIGIT
-                            //    || prevToken.type == OperatorType.CONST
-                            //    || prevToken.type == OperatorType.CLOSE_BRACKET))
-                            //    throw new Exception("Incorrect phrase");
-
                             outToken += infixPhrase[iCounter];
                             ++iCounter;
                         }
@@ -321,10 +281,7 @@ namespace MathParserSpace
     {
         static void Main(string[] args)
         {
-            //string mathExpression = "15 * x * y * (1 - x) * (1 - y) * sin(pi * x) * sin(pi * y)";
             string mathExpression = "x^  2 + y ^ 2 + 100 + sin(pi)";
-            //foreach (Token token in MathParser.calculate(0.5, 0.5, mathExpression)) 
-            //    Console.WriteLine(token.singleToken + " ");
             Console.WriteLine(MathParser.calculate(0.5, 0.5, mathExpression).ToString());
             Console.ReadLine();
         }
