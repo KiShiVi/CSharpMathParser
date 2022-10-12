@@ -107,6 +107,12 @@ namespace MathParserSpace
                                     case "tg" : localStack.Push(Math.Tan(localStack.Pop()));         break;
                                     case "ctg": localStack.Push(ctg(localStack.Pop()));              break;
                                     case "ln" : localStack.Push(Math.Log(localStack.Pop()));         break;
+
+                                    case "-sin": localStack.Push(-Math.Sin(localStack.Pop()));         break;
+                                    case "-cos": localStack.Push(-Math.Cos(localStack.Pop()));         break;
+                                    case "-tg" : localStack.Push(-Math.Tan(localStack.Pop()));         break;
+                                    case "-ctg": localStack.Push(-ctg(localStack.Pop()));              break;
+                                    case "-ln" : localStack.Push(-Math.Log(localStack.Pop()));         break;
                                 }
                             break;
 
@@ -115,6 +121,9 @@ namespace MathParserSpace
                             {
                                 case "pi": localStack.Push(3.1415926); break;
                                 case "e" : localStack.Push(2.7182818); break;
+
+                                case "-pi": localStack.Push(-3.1415926); break;
+                                case "-e" : localStack.Push(-2.7182818); break;
                             }
                             break;
 
@@ -123,6 +132,9 @@ namespace MathParserSpace
                             {
                                 case "x": localStack.Push(x); break;
                                 case "y": localStack.Push(y); break;
+
+                                case "-x": localStack.Push(-x); break;
+                                case "-y": localStack.Push(-y); break;
                             }
                             break;
 
@@ -237,20 +249,10 @@ namespace MathParserSpace
                                 (prevToken.type == OperatorType.OPEN_BRACKET)))
                     {
                         outToken += token.singleToken;
-                        ++iCounter;
+                        Token nextToken = parseToken(infixPhrase.Substring(token.singleToken.Length), token);
+                        outToken += nextToken.singleToken;
 
-                        if (infixPhrase[iCounter] == 'x')
-                            return new Token(outToken + infixPhrase[iCounter].ToString(), -1, OperatorType.PARAM);
-
-                        if (infixPhrase[iCounter] == 'y')
-                            return new Token(outToken + infixPhrase[iCounter].ToString(), -1, OperatorType.PARAM);
-
-                        while (iCounter < infixPhrase.Length && (Char.IsDigit(infixPhrase[iCounter])))
-                        {
-                            outToken += infixPhrase[iCounter];
-                            ++iCounter;
-                        }
-                        return new Token(outToken, -1, OperatorType.DIGIT);
+                        return new Token(outToken, -1, nextToken.type);
                     }
                     else
                         return new Token(token);
@@ -282,6 +284,7 @@ namespace MathParserSpace
         static void Main(string[] args)
         {
             string mathExpression = "x^  2 + y ^ 2 + 100 + sin(pi)";
+            //string mathExpression = "-x-sin(x) + y";
             Console.WriteLine(MathParser.calculate(0.5, 0.5, mathExpression).ToString());
             Console.ReadLine();
         }
